@@ -1,0 +1,64 @@
+# @shotpay/button
+
+A browser-side ShotPay button. Covers rendering the button and asking **your
+server** to open the checkout session — nothing else. Opening the session is
+your server's job because that is where the API key lives; the button never
+sees ShotPay credentials, and once it has a session it sends the customer to
+the hosted checkout with a top-level redirect.
+
+**Status: early access.** Not yet published to npm. Install from a checkout
+of this repository or a git dependency in the meantime.
+
+## Usage
+
+```ts
+import { mount } from '@shotpay/button';
+
+mount(document.querySelector('#shotpay'), {
+    // A URL on your server that opens the session (with @shotpay/sdk or a
+    // direct call to POST /widget/sessions) and responds with it.
+    endpoint: '/shotpay/create-session',
+});
+```
+
+The endpoint receives `POST {}` with an `Idempotency-Key` header — pass it
+through to ShotPay so a retried click cannot open two sessions — and responds
+with the session, bare or wrapped in a `data` envelope; `checkout_url` is the
+only field the button reads. When the request needs your own payload (a cart
+id, an amount), take over the call with `createSession` instead:
+
+```ts
+mount(element, {
+    createSession: async ({ idempotencyKey }) => {
+        const response = await fetch('/shotpay/create-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Idempotency-Key': idempotencyKey },
+            body: JSON.stringify({ cart: cartId }),
+        });
+
+        return response.json(); // null aborts quietly, e.g. after failed validation
+    },
+});
+```
+
+## In React
+
+```tsx
+import { ShotPayButton } from '@shotpay/button/react';
+
+<ShotPayButton
+    createSession={openSessionOnYourServer}
+    onSession={(session) => setSession(session)} // omit to get the default redirect
+/>;
+```
+
+## What stays on your server
+
+The session-opening call, the API key it is signed with, and the
+[handshake](/docs/guides/handshake) that marks the order paid. The button is
+only the trigger: it guards against double clicks, mints the idempotency key,
+and performs the redirect. One page requirement: it injects a `<style>`
+element, so a CSP must allow inline styles for `style-src`.
+
+The label, theme (`dark`/`light`), and loading text are configurable; the
+branding is not — that is the point of shipping a button.
