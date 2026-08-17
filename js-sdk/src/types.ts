@@ -1,5 +1,5 @@
 /** Mirrors the fields `CheckoutSessionResource` returns from both
- * `POST /widget/sessions` and `GET /widget/checkout-sessions/{id}`. */
+ * `POST /v1/sessions` and `GET /v1/checkout-sessions/{id}`. */
 export interface CheckoutSession {
     id: string;
     status: 'pending' | 'decision_made' | 'completed' | 'cancelled' | 'expired';

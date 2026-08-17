@@ -16,7 +16,7 @@ import { mount } from '@shotpay/button';
 
 mount(document.querySelector('#shotpay'), {
     // A URL on your server that opens the session (with @shotpay/sdk or a
-    // direct call to POST /widget/sessions) and responds with it.
+    // direct call to POST /v1/sessions) and responds with it.
     endpoint: '/shotpay/create-session',
 });
 ```
