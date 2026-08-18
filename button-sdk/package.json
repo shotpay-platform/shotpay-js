@@ -1,6 +1,6 @@
 {
     "name": "@shotpay/button",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Browser-side ShotPay button: asks your server to open a checkout session and redirects the customer. Never holds ShotPay credentials.",
     "keywords": [
         "shotpay",

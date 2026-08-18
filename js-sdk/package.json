@@ -1,6 +1,6 @@
 {
     "name": "@shotpay/sdk",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Minimal JS/TS client for the ShotPay Checkout API: open and retrieve checkout sessions, and verify inbound webhook signatures.",
     "keywords": [
         "shotpay",
