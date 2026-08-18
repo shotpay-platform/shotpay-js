@@ -22,7 +22,7 @@ export class ShotPayClient {
     constructor(options: ShotPayClientOptions) {
         this.clientId = options.clientId;
         this.apiKey = options.apiKey;
-        this.baseUrl = (options.baseUrl ?? 'https://shotpay-platform.test/api').replace(/\/+$/, '');
+        this.baseUrl = (options.baseUrl ?? 'https://sandbox.shotpay.com/api').replace(/\/+$/, '');
     }
 
     /**

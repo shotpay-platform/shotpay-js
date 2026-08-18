@@ -6,8 +6,20 @@ your server's job because that is where the API key lives; the button never
 sees ShotPay credentials, and once it has a session it sends the customer to
 the hosted checkout with a top-level redirect.
 
-**Status: early access.** Not yet published to npm. Install from a checkout
-of this repository or a git dependency in the meantime.
+## Install
+
+```sh
+npm install @shotpay/button
+```
+
+React is an optional peer dependency — install it only if you import
+`@shotpay/button/react`.
+
+**Early access — the `0.x` line is still in progress.** Breaking changes can
+land in a minor bump (`0.1.x` → `0.2.0`). A default `^0.1.0` range only
+resolves `0.1.x`, so you will not be moved onto a breaking release without
+changing the range yourself. Pin an exact version if you want no movement at
+all.
 
 ## Usage
 
@@ -15,7 +27,7 @@ of this repository or a git dependency in the meantime.
 import { mount } from '@shotpay/button';
 
 mount(document.querySelector('#shotpay'), {
-    // A URL on your server that opens the session (with @shotpay/sdk or a
+    // A URL on your server that opens the session (with @shotpay/node or a
     // direct call to POST /v1/sessions) and responds with it.
     endpoint: '/shotpay/create-session',
 });
