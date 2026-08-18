@@ -11,7 +11,7 @@ export interface ShotPayClientOptions {
  * A thin wrapper around the checkout session lifecycle documented at
  * https://shotpay-platform.test/docs/api/ — open a session, retrieve one your
  * server opened, and (via `verifyWebhookSignature`) confirm a delivery is
- * genuine. Not a full API client: everything else in the widget API is called
+ * genuine. Not a full API client: everything else in the ShotPay API is called
  * directly, the same way this client is built.
  */
 export class ShotPayClient {
@@ -26,7 +26,7 @@ export class ShotPayClient {
     }
 
     /**
-     * `POST /widget/sessions`. Pass `idempotencyKey` to make a retry of this
+     * `POST /v1/sessions`. Pass `idempotencyKey` to make a retry of this
      * exact call safe — replaying the same key with the same params returns
      * the original session rather than opening a second one.
      */
@@ -34,19 +34,19 @@ export class ShotPayClient {
         params: CreateCheckoutSessionParams,
         idempotencyKey?: string,
     ): Promise<CheckoutSession> {
-        return this.request('POST', '/widget/sessions', {
+        return this.request('POST', '/v1/sessions', {
             body: JSON.stringify(params),
             headers: idempotencyKey === undefined ? {} : { 'Idempotency-Key': idempotencyKey },
         });
     }
 
     /**
-     * `GET /widget/checkout-sessions/{id}`. The server-to-server counterpart
+     * `GET /v1/checkout-sessions/{id}`. The server-to-server counterpart
      * to create — ask what happened to a session without waiting on a
-     * webhook. Requires a key with the `widget:read` scope.
+     * webhook. Requires a key with the `checkout:read` scope.
      */
     async retrieveCheckoutSession(id: string): Promise<CheckoutSession> {
-        return this.request('GET', `/widget/checkout-sessions/${encodeURIComponent(id)}`);
+        return this.request('GET', `/v1/checkout-sessions/${encodeURIComponent(id)}`);
     }
 
     private async request(

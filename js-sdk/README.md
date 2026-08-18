@@ -2,7 +2,7 @@
 
 A minimal JS/TS client for the ShotPay Checkout API. Covers the checkout
 session lifecycle and webhook signature verification — nothing else. For
-every other endpoint, call the widget API directly as documented at
+every other endpoint, call the ShotPay API directly as documented at
 `/docs/api`.
 
 **Status: early access.** Not yet published to npm. Install from a checkout
