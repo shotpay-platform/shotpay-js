@@ -1,4 +1,4 @@
-# @shotpay/sdk
+# @shotpay/node
 
 A minimal JS/TS client for the ShotPay Checkout API. Covers the checkout
 session lifecycle and webhook signature verification — nothing else. For
@@ -8,7 +8,7 @@ every other endpoint, call the ShotPay API directly as documented at
 ## Install
 
 ```sh
-npm install @shotpay/sdk
+npm install @shotpay/node
 ```
 
 Requires Node 18 or newer.
@@ -22,7 +22,7 @@ all.
 ## Usage
 
 ```ts
-import { ShotPayClient } from '@shotpay/sdk';
+import { ShotPayClient } from '@shotpay/node';
 
 const client = new ShotPayClient({
     clientId: 'mch_live_...',
@@ -49,7 +49,7 @@ Node-only — the endpoint secret this needs is a server-side secret, the same
 as an API key.
 
 ```ts
-import { verifyWebhookSignature } from '@shotpay/sdk';
+import { verifyWebhookSignature } from '@shotpay/node';
 
 const header = request.headers['shotpay-signature'];
 const rawBody = await readRawBody(request); // verify against the raw bytes, not re-serialized JSON
