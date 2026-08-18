@@ -5,8 +5,19 @@ session lifecycle and webhook signature verification — nothing else. For
 every other endpoint, call the ShotPay API directly as documented at
 `/docs/api`.
 
-**Status: early access.** Not yet published to npm. Install from a checkout
-of this repository or a git dependency in the meantime.
+## Install
+
+```sh
+npm install @shotpay/sdk
+```
+
+Requires Node 18 or newer.
+
+**Early access — the `0.x` line is still in progress.** Breaking changes can
+land in a minor bump (`0.1.x` → `0.2.0`). A default `^0.1.0` range only
+resolves `0.1.x`, so you will not be moved onto a breaking release without
+changing the range yourself. Pin an exact version if you want no movement at
+all.
 
 ## Usage
 
