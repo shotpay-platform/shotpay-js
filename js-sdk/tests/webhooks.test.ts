@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { verifyWebhookSignature } from '../src/webhooks.js';
 
 const secret = 'whsec_testing';
-const payload = '{"id":"evt_1","type":"installment.paid"}';
+const payload = '{"id":"evt_1","type":"contract.paid"}';
 
 function sign(body: string, key: string, timestamp: number): string {
     const digest = createHmac('sha256', key).update(`${timestamp}.${body}`).digest('hex');
