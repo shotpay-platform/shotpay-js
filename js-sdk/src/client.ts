@@ -1,4 +1,6 @@
-import { ShotPayApiError } from './errors.js';
+import { CheckoutSessions } from './resources/checkout-sessions.js';
+import { Contracts } from './resources/contracts.js';
+import { HttpTransport } from './transport.js';
 import type { CheckoutSession, CreateCheckoutSessionParams } from './types.js';
 
 export interface ShotPayClientOptions {
@@ -8,70 +10,42 @@ export interface ShotPayClientOptions {
 }
 
 /**
- * A thin wrapper around the checkout session lifecycle documented at
- * https://shotpay-platform.test/docs/api/ — open a session, retrieve one your
- * server opened, and (via `verifyWebhookSignature`) confirm a delivery is
- * genuine. Not a full API client: everything else in the ShotPay API is called
- * directly, the same way this client is built.
+ * A client for the ShotPay API documented at
+ * https://shotpay-platform.test/docs/api/ — the checkout session lifecycle
+ * under `checkoutSessions`, your agreements under `contracts`, and (via
+ * `verifyWebhookSignature`) confirmation that a delivery is genuine. Endpoints
+ * without a resource here stay callable directly, the same way this client is
+ * built.
  */
 export class ShotPayClient {
-    private readonly clientId: string;
-    private readonly apiKey: string;
-    private readonly baseUrl: string;
+    readonly checkoutSessions: CheckoutSessions;
+    readonly contracts: Contracts;
 
     constructor(options: ShotPayClientOptions) {
-        this.clientId = options.clientId;
-        this.apiKey = options.apiKey;
-        this.baseUrl = (options.baseUrl ?? 'https://sandbox.shotpay.com/api').replace(/\/+$/, '');
+        const transport = new HttpTransport(
+            options.clientId,
+            options.apiKey,
+            options.baseUrl ?? 'https://sandbox.shotpay.com/api',
+        );
+
+        this.checkoutSessions = new CheckoutSessions(transport);
+        this.contracts = new Contracts(transport);
     }
 
     /**
-     * `POST /v1/sessions`. Pass `idempotencyKey` to make a retry of this
-     * exact call safe — replaying the same key with the same params returns
-     * the original session rather than opening a second one.
+     * @deprecated Use `client.checkoutSessions.create()`. Removed in 0.3.0.
      */
-    async createCheckoutSession(
+    createCheckoutSession(
         params: CreateCheckoutSessionParams,
         idempotencyKey?: string,
     ): Promise<CheckoutSession> {
-        return this.request('POST', '/v1/sessions', {
-            body: JSON.stringify(params),
-            headers: idempotencyKey === undefined ? {} : { 'Idempotency-Key': idempotencyKey },
-        });
+        return this.checkoutSessions.create(params, idempotencyKey);
     }
 
     /**
-     * `GET /v1/checkout-sessions/{id}`. The server-to-server counterpart
-     * to create — ask what happened to a session without waiting on a
-     * webhook. Requires a key with the `checkout:read` scope.
+     * @deprecated Use `client.checkoutSessions.retrieve()`. Removed in 0.3.0.
      */
-    async retrieveCheckoutSession(id: string): Promise<CheckoutSession> {
-        return this.request('GET', `/v1/checkout-sessions/${encodeURIComponent(id)}`);
-    }
-
-    private async request(
-        method: string,
-        path: string,
-        init: { body?: string; headers?: Record<string, string> } = {},
-    ): Promise<CheckoutSession> {
-        const response = await fetch(`${this.baseUrl}${path}`, {
-            method,
-            headers: {
-                'X-Client-Id': this.clientId,
-                'X-Api-Key': this.apiKey,
-                Accept: 'application/json',
-                ...(init.body === undefined ? {} : { 'Content-Type': 'application/json' }),
-                ...init.headers,
-            },
-            body: init.body,
-        });
-
-        const payload = (await response.json()) as { data?: CheckoutSession; message?: string };
-
-        if (!response.ok) {
-            throw new ShotPayApiError(response.status, payload as Record<string, unknown>);
-        }
-
-        return payload.data as CheckoutSession;
+    retrieveCheckoutSession(id: string): Promise<CheckoutSession> {
+        return this.checkoutSessions.retrieve(id);
     }
 }
