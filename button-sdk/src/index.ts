@@ -4,5 +4,7 @@ export type {
     ButtonSession,
     ShotPayButtonHandle,
     ShotPayButtonOptions,
+    ShotPayButtonRadius,
+    ShotPayButtonSize,
     ShotPayButtonTheme,
 } from './types.js';
