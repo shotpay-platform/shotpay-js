@@ -42,6 +42,34 @@ describe('mount', () => {
         expect(button.type).toBe('button');
     });
 
+    it('renders the shape defaults that existing pages rely on', () => {
+        const element = host();
+        mount(element, { createSession: async () => session });
+
+        const button = buttonIn(element);
+        expect(button.getAttribute('data-size')).toBe('md');
+        expect(button.getAttribute('data-radius')).toBe('md');
+        expect(button.getAttribute('data-width')).toBe('full');
+        expect(button.querySelector<HTMLElement>('.shotpay-button__icon')?.hidden).toBe(false);
+    });
+
+    it('respects size, radius, fullWidth, and showLogo options', () => {
+        const element = host();
+        mount(element, {
+            createSession: async () => session,
+            size: 'lg',
+            radius: 'pill',
+            fullWidth: false,
+            showLogo: false,
+        });
+
+        const button = buttonIn(element);
+        expect(button.getAttribute('data-size')).toBe('lg');
+        expect(button.getAttribute('data-radius')).toBe('pill');
+        expect(button.getAttribute('data-width')).toBe('auto');
+        expect(button.querySelector<HTMLElement>('.shotpay-button__icon')?.hidden).toBe(true);
+    });
+
     it('carries the brand mark, hidden from the accessible name', () => {
         const element = host();
         mount(element, { createSession: async () => session });
@@ -227,6 +255,19 @@ describe('mount', () => {
         expect(button.textContent).toBe('Hold it for me');
         expect(button.getAttribute('data-theme')).toBe('light');
         expect(button.disabled).toBe(true);
+    });
+
+    it('update() reshapes the button and toggles the logo back on', () => {
+        const element = host();
+        const handle = mount(element, { createSession: async () => session, showLogo: false });
+
+        handle.update({ size: 'sm', radius: 'none', fullWidth: false, showLogo: true });
+
+        const button = buttonIn(element);
+        expect(button.getAttribute('data-size')).toBe('sm');
+        expect(button.getAttribute('data-radius')).toBe('none');
+        expect(button.getAttribute('data-width')).toBe('auto');
+        expect(button.querySelector<HTMLElement>('.shotpay-button__icon')?.hidden).toBe(false);
     });
 
     it('destroy() removes what mount created', () => {

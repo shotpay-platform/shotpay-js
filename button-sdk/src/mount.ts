@@ -126,6 +126,10 @@ export function mount<S extends ButtonSession = ButtonSession>(
     function applyOptions(): void {
         button.type = current.type ?? 'button';
         button.setAttribute('data-theme', current.theme ?? 'dark');
+        button.setAttribute('data-size', current.size ?? 'md');
+        button.setAttribute('data-radius', current.radius ?? 'md');
+        button.setAttribute('data-width', current.fullWidth === false ? 'auto' : 'full');
+        iconElement.hidden = current.showLogo === false;
         button.disabled = loading || current.disabled === true;
 
         if (!loading) {
