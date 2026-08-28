@@ -1,6 +1,9 @@
 const STYLE_ID = 'shotpay-button-styles';
 
 /**
+ * The BigCommerce control panel's preview mirrors these rules by hand
+ * (resources/views/bigcommerce/panel.blade.php) — change one, change both.
+ *
  * Colors are the ShotPay brand palette (`frontend/src/styles/theme.css`),
  * inlined because this package ships to pages that have none of the
  * platform's tokens. Small red text uses the darker ramp step, not the brand
@@ -36,8 +39,29 @@ const CSS = `
     opacity: 0.6;
     cursor: default;
 }
+.shotpay-button[data-size='sm'] {
+    padding: 0.375rem 0.875rem;
+}
+.shotpay-button[data-size='lg'] {
+    padding: 0.875rem 1.5rem;
+}
+.shotpay-button[data-radius='none'] {
+    border-radius: 0;
+}
+.shotpay-button[data-radius='sm'] {
+    border-radius: 0.25rem;
+}
+.shotpay-button[data-radius='pill'] {
+    border-radius: 9999px;
+}
+.shotpay-button[data-width='auto'] {
+    width: auto;
+}
 .shotpay-button__icon {
     display: inline-flex;
+}
+.shotpay-button__icon[hidden] {
+    display: none;
 }
 .shotpay-button__icon svg {
     height: 1.05em;

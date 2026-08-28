@@ -9,6 +9,10 @@ export interface ButtonSession {
 
 export type ShotPayButtonTheme = 'dark' | 'light';
 
+export type ShotPayButtonSize = 'sm' | 'md' | 'lg';
+
+export type ShotPayButtonRadius = 'none' | 'sm' | 'md' | 'pill';
+
 export interface ShotPayButtonOptions<S extends ButtonSession = ButtonSession> {
     /**
      * Asks your server to open a checkout session. Resolve with the session,
@@ -42,6 +46,16 @@ export interface ShotPayButtonOptions<S extends ButtonSession = ButtonSession> {
     label?: string;
 
     loadingLabel?: string;
+
+    size?: ShotPayButtonSize;
+
+    radius?: ShotPayButtonRadius;
+
+    /** `false` shrinks the button to its content instead of filling the host. */
+    fullWidth?: boolean;
+
+    /** `false` hides the ShotPay mark, leaving the label alone. */
+    showLogo?: boolean;
 
     disabled?: boolean;
 

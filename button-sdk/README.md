@@ -72,5 +72,6 @@ only the trigger: it guards against double clicks, mints the idempotency key,
 and performs the redirect. One page requirement: it injects a `<style>`
 element, so a CSP must allow inline styles for `style-src`.
 
-The label, theme (`dark`/`light`), and loading text are configurable; the
-branding is not — that is the point of shipping a button.
+The label, theme (`dark`/`light`), loading text, size, shape, and logo
+visibility are configurable; the palette and the mark's geometry are not —
+that is the point of shipping a button.
