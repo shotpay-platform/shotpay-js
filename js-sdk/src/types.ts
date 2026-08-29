@@ -32,18 +32,29 @@ export interface CreateCheckoutSessionParams {
     metadata?: Record<string, string>;
 }
 
-/** `active` may become any of the other three, all of which are terminal. */
-export type ContractStatus = 'active' | 'completed' | 'cancelled' | 'defaulted';
+/**
+ * `pending` is an agreement whose Cart Capture has not landed. `active` may
+ * become any of the other three, all of which are terminal.
+ */
+export type ContractStatus = 'pending' | 'active' | 'completed' | 'cancelled' | 'defaulted';
 
 /**
  * `upcoming` becomes `due` when its deadline passes, then `paid` once
- * collected. `missed` is a deadline that passed uncollected and can still be
- * settled.
+ * collected. `past_due` is Attempt 2 having failed with the consumer
+ * notified; `delinquent` is the grace period having run out. Both can still
+ * be settled.
  */
-export type InstallmentStatus = 'upcoming' | 'due' | 'paid' | 'missed';
+export type InstallmentStatus = 'upcoming' | 'due' | 'paid' | 'past_due' | 'delinquent';
+
+/** The Cart Capture opens the plan; every capture after it is an Installment Capture. */
+export type CaptureType = 'cart_capture' | 'installment_capture';
 
 export interface PlanInstallment {
+    /** The row's position in the schedule. 1 is the Cart Capture. */
     sequence: number;
+    type: CaptureType;
+    /** Numbered within the plan from 1; null on the Cart Capture. */
+    installment_number: number | null;
     /** Integer minor units (cents). */
     amount: number;
     /** `YYYY-MM-DD` — a calendar date, not a timestamp. */
@@ -66,7 +77,8 @@ export interface Contract {
     customer_state: string | null;
     /** The order total before the fee. */
     total_amount: number;
-    service_fee_amount: number;
+    /** The Reservation Fee, retained on default. */
+    reservation_fee_amount: number;
     /** The order total plus the fee — what the plan collects in all. */
     customer_total: number;
     down_payment_amount: number;

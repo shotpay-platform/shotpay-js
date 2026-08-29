@@ -26,7 +26,7 @@ export function contractPayload(overrides: Partial<Contract> = {}): Contract {
         customer_email: 'dana@example.com',
         customer_state: 'CA',
         total_amount: 100000,
-        service_fee_amount: 5000,
+        reservation_fee_amount: 5000,
         customer_total: 105000,
         down_payment_amount: 26250,
         paid_amount: 26250,
