@@ -21,6 +21,7 @@ function sessionPayload(overrides: Partial<CheckoutSession> = {}): CheckoutSessi
         id: 'cs_test_123',
         status: 'pending',
         order_reference: 'ORD-1001',
+        ffl_required: false,
         total_amount: 49999,
         down_payment_amount: 12500,
         down_payment_percentage: 25,

@@ -4,6 +4,8 @@ export interface CheckoutSession {
     id: string;
     status: 'pending' | 'decision_made' | 'completed' | 'cancelled' | 'expired';
     order_reference: string;
+    /** Whether the customer must pick an FFL dealer before confirming. */
+    ffl_required: boolean;
     /** Integer minor units (cents) — 42900 is $429.00. */
     total_amount: number;
     down_payment_amount: number;
@@ -25,6 +27,8 @@ export interface CreateCheckoutSessionParams {
     cancel_url: string;
     customer_email?: string | null;
     customer_state?: string | null;
+    /** Set when the order ships a firearm to a licensed dealer. Defaults to false. */
+    ffl_required?: boolean;
     /**
      * Your own string key/value pairs, echoed back on the session and on the
      * contract it becomes. Max 50 keys; keys 40 chars, values 500.
