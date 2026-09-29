@@ -1,3 +1,38 @@
+/**
+ * One line of what the customer bought, whichever platform described it.
+ * Every key is always present; `sku` and `image_url` are null when the
+ * product had none.
+ */
+export interface OrderItem {
+    name: string;
+    sku: string | null;
+    quantity: number;
+    /** The price of one unit, in integer minor units (cents). */
+    unit_amount: number;
+    image_url: string | null;
+}
+
+/** The platform whose cart-line shape `items` is sent in. */
+export type OrderItemsSource = 'shotpay' | 'bigcommerce' | 'shopify' | 'woocommerce' | 'magento';
+
+/** One line of the order in ShotPay's own shape — the `shotpay` source. */
+export interface OrderItemInput {
+    name: string;
+    sku?: string | null;
+    quantity: number;
+    /** The price of one unit, in integer minor units (cents). */
+    unit_amount: number;
+    /** HTTPS only. */
+    image_url?: string | null;
+}
+
+/**
+ * A platform's own cart line, forwarded unchanged — a Shopify `/cart.js`
+ * item, a WooCommerce Store API item, a Magento GraphQL cart item or a
+ * BigCommerce Carts API line. See the API reference for the fields read.
+ */
+export type PlatformCartLine = Record<string, unknown>;
+
 /** Mirrors the fields `CheckoutSessionResource` returns from both
  * `POST /v1/sessions` and `GET /v1/checkout-sessions/{id}`. */
 export interface CheckoutSession {
@@ -17,6 +52,8 @@ export interface CheckoutSession {
     created_at: string;
     /** Your own key/value pairs, as sent on create. `{}` when none were sent. */
     metadata: Record<string, string>;
+    /** What the customer is buying, in the order sent. Empty when none were sent. */
+    items: OrderItem[];
 }
 
 export interface CreateCheckoutSessionParams {
@@ -34,6 +71,13 @@ export interface CreateCheckoutSessionParams {
      * contract it becomes. Max 50 keys; keys 40 chars, values 500.
      */
     metadata?: Record<string, string>;
+    /** Whose line shape `items` is in. Omit for `OrderItemInput`. */
+    items_source?: OrderItemsSource | null;
+    /**
+     * What the customer is buying, one entry per cart line — `OrderItemInput`
+     * by default, or the named platform's own lines. At most 50.
+     */
+    items?: OrderItemInput[] | PlatformCartLine[] | null;
 }
 
 /**
@@ -96,6 +140,8 @@ export interface Contract {
     created_at: string;
     /** Your own key/value pairs. `{}` when none were set. */
     metadata: Record<string, string>;
+    /** What the customer bought, carried over from the session. */
+    items: OrderItem[];
 }
 
 export interface ListContractsParams {

@@ -41,6 +41,7 @@ const session = await client.checkoutSessions.create(
         total_amount: 49999, // integer cents — $499.99
         return_url: 'https://store.example/checkout/complete',
         cancel_url: 'https://store.example/cart',
+        items: [{ name: 'Hunting Rifle', sku: 'RF-100', quantity: 1, unit_amount: 49999 }],
     },
     'a-uuid-per-checkout-attempt',
 );

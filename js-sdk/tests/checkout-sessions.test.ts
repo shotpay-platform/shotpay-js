@@ -31,6 +31,7 @@ function sessionPayload(overrides: Partial<CheckoutSession> = {}): CheckoutSessi
         expires_at: '2026-08-26T12:00:00.000000Z',
         created_at: '2026-08-26T11:00:00.000000Z',
         metadata: {},
+        items: [],
         ...overrides,
     };
 }
@@ -57,6 +58,21 @@ describe('create', () => {
         expect(init.body).toBe(JSON.stringify(params));
         expect(session.id).toBe('cs_test_123');
         expect(session.checkout_url).toBe('https://sandbox.shotpay.com/c/cs_test_123');
+    });
+
+    it('sends items with the platform they came from and maps the ones returned', async () => {
+        const item = { name: 'Beanie', sku: 'BN-1', quantity: 2, unit_amount: 1800, image_url: null };
+        fetchMock.mockResolvedValue(jsonResponse({ data: sessionPayload({ items: [item] }) }));
+
+        const withItems: CreateCheckoutSessionParams = {
+            ...params,
+            items_source: 'shopify',
+            items: [{ title: 'Beanie', sku: 'BN-1', quantity: 2, final_price: 1800 }],
+        };
+        const session = await client.checkoutSessions.create(withItems);
+
+        expect(callAt(0).init.body).toBe(JSON.stringify(withItems));
+        expect(session.items).toEqual([item]);
     });
 
     it('sends the idempotency key only when one is supplied', async () => {

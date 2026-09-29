@@ -35,6 +35,7 @@ describe('list', () => {
         expect(init.method).toBe('GET');
         expect(page.data).toHaveLength(1);
         expect(page.data[0]!.reference).toBe('LAY-XK2M9QPR7V');
+        expect(page.data[0]!.items[0]!.name).toBe('Hunting Rifle');
         expect(page.meta.current_page).toBe(1);
         expect(page.meta.last_page).toBe(3);
         expect(page.meta.total).toBe(42);

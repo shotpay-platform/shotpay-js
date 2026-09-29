@@ -41,6 +41,9 @@ export function contractPayload(overrides: Partial<Contract> = {}): Contract {
         cancelled_at: null,
         created_at: '2026-08-25T09:59:00.000000Z',
         metadata: { sales_rep: 'kim' },
+        items: [
+            { name: 'Hunting Rifle', sku: 'RF-100', quantity: 1, unit_amount: 100000, image_url: 'https://cdn.store.example/rifle.jpg' },
+        ],
         ...overrides,
     };
 }

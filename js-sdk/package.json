@@ -1,6 +1,6 @@
 {
     "name": "@shotpay/node",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "description": "JS/TS client for the ShotPay API: open and retrieve checkout sessions, work your layaway contracts, and verify inbound webhook signatures.",
     "keywords": [
         "shotpay",
