@@ -13,7 +13,7 @@ export interface OrderItem {
 }
 
 /** The platform whose cart-line shape `items` is sent in. */
-export type OrderItemsSource = 'shotpay' | 'bigcommerce' | 'shopify' | 'woocommerce' | 'magento';
+export type OrderItemsSource = 'shotpay' | 'bigcommerce';
 
 /** One line of the order in ShotPay's own shape — the `shotpay` source. */
 export interface OrderItemInput {
@@ -27,9 +27,8 @@ export interface OrderItemInput {
 }
 
 /**
- * A platform's own cart line, forwarded unchanged — a Shopify `/cart.js`
- * item, a WooCommerce Store API item, a Magento GraphQL cart item or a
- * BigCommerce Carts API line. See the API reference for the fields read.
+ * A platform's own cart line, forwarded unchanged — today a BigCommerce Carts
+ * API line. See the API reference for the fields read.
  */
 export type PlatformCartLine = Record<string, unknown>;
 

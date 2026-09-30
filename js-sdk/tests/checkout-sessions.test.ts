@@ -66,8 +66,8 @@ describe('create', () => {
 
         const withItems: CreateCheckoutSessionParams = {
             ...params,
-            items_source: 'shopify',
-            items: [{ title: 'Beanie', sku: 'BN-1', quantity: 2, final_price: 1800 }],
+            items_source: 'bigcommerce',
+            items: [{ name: 'Beanie', sku: 'BN-1', quantity: 2, sale_price: 18 }],
         };
         const session = await client.checkoutSessions.create(withItems);
 
