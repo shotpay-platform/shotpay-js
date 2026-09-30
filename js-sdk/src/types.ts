@@ -74,7 +74,8 @@ export interface CreateCheckoutSessionParams {
     items_source?: OrderItemsSource | null;
     /**
      * What the customer is buying, one entry per cart line — `OrderItemInput`
-     * by default, or the named platform's own lines. At most 50.
+     * by default, or the named platform's own lines. Each shape has its own
+     * line limit, 50 for both today.
      */
     items?: OrderItemInput[] | PlatformCartLine[] | null;
 }
