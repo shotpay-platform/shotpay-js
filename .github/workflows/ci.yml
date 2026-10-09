@@ -56,3 +56,16 @@ jobs:
 
       - name: Vitest
         run: npm test
+
+  consumer-install:
+    name: Consumer install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install packed tarballs and check them
+        run: ./consumer-e2e/run.sh

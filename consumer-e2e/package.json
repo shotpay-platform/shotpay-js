@@ -1,0 +1,5 @@
+{
+    "name": "shotpay-js-consumer-e2e",
+    "private": true,
+    "type": "module"
+}
