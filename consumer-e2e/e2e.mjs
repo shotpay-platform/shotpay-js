@@ -48,7 +48,7 @@ const opened = await new Promise((resolve, reject) => {
         createSession: () =>
             client.checkoutSessions.create({
                 order_reference: `BUTTON-${Math.random().toString(16).slice(2)}`,
-                total_amount: 12500,
+                total_amount: 49999,
                 customer_state: 'TX',
                 return_url: 'https://example.test/return',
                 cancel_url: 'https://example.test/cancel',
